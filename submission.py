@@ -1,4 +1,5 @@
 from mlc.birdclef import ScorableModelTemplate
+import librosa
 
 class ScorableModel(ScorableModelTemplate):
 
