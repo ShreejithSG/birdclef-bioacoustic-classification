@@ -75,5 +75,6 @@ Install dependencies with:
 
 ```bash
 pip install -r requirements.txt
+```
 
 Special thanks to the BirdCLEF organizers, UCSD CSE department, and our course advisor Prof. Berk Ustun for supporting the competition-driven research framework.
