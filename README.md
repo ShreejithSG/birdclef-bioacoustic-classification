@@ -7,8 +7,8 @@ This repository contains the final training and inference pipelines developed fo
 | Notebook                        | Description                                      |
 |--------------------------------|--------------------------------------------------|
 | `single_bird_detector_grekis.ipynb` | Initial binary classifier for top species       |
-| `3_bird_detector.ipynb`  | Prototype with 1-vs-rest classifiers (3 birds)  |
-| `206_bird_training-final.ipynb`| Final pipeline training 206 per-species models |
+| `3_bird detector.ipynb`  | Prototype with 1-vs-rest classifiers (3 birds)  |
+| `206-bird-training-final.ipynb`| Final pipeline training 206 per-species models |
 | `inference.ipynb`   | Inference and Kaggle submission generation      |
 
 ## 🛠 Features
