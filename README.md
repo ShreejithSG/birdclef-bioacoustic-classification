@@ -1,8 +1,10 @@
 # BirdCLEF 2025 - Bioacoustic Bird Detector 🐦
 
-This repository contains the core codebase developed for the BirdCLEF 2025 challenge, featuring a **novel per-species binary classification framework** for bioacoustic bird detection. The approach deviates from conventional multi-class CNN pipelines by building **dedicated binary classifiers for each species**, making it highly interpretable, modular, and easier to scale across hundreds of species.
+This repository contains the core codebase developed for the BirdCLEF 2025 challenge, featuring a **novel per-species binary classification framework** for bioacoustic bird detection. The approach deviates from conventional multi-class CNN pipelines by building **dedicated binary classifiers for each species**, making it highly interpretable, modular, and scalable across hundreds of classes.
 
-The final methodology was submitted as a working notes paper to **CLEF 2025** and is currently under review.
+The final methodology was submitted as a **working notes paper to CLEF 2025** and is currently under review.
+
+> 🧪 This project was developed as part of **DSC 291: Machine Learning Competitions** at UC San Diego, under the guidance of Prof. Berk Ustun.
 
 ---
 
@@ -11,49 +13,53 @@ The final methodology was submitted as a working notes paper to **CLEF 2025** an
 | Notebook                           | Description                                                        |
 |-----------------------------------|--------------------------------------------------------------------|
 | `single_bird_detector_grekis.ipynb` | Binary classifier using frequency-bin features for species `grekis` |
-| `3_bird_detector.ipynb`            | 1-vs-rest classifiers for 3 most frequent species (grekis, compau, trokin) |
-| `206-bird-training-final.ipynb`    | Full training pipeline: 206 per-species models with metadata + augmentation |
-| `inference.ipynb`                  | Custom inference pipeline over soundscape chunks for all 206 models |
+| `3_bird_detector.ipynb`            | 1-vs-rest classifiers for 3 frequent species (grekis, compau, trokin) |
+| `206-bird-training-final.ipynb`    | Full pipeline training 206 per-species models using metadata + augmentation |
+| `inference.ipynb`                  | Chunk-wise inference pipeline across all 206 models for test soundscapes |
 
 ---
+
 ## 📂 Data
 
-The training and test datasets used in this project are available on the [BirdCLEF 2025 Kaggle Competition](https://www.kaggle.com/competitions/birdclef-2025/data). Due to size constraints (~12GB), raw audio files are not stored in this repository.
+The official dataset is available on the [BirdCLEF 2025 Kaggle Competition](https://www.kaggle.com/competitions/birdclef-2025/data). Raw `.ogg` audio files (~12GB) are not included in this repo due to storage limits.
 
-**Key metadata and artifacts included in this repo:**
-- `train.csv`: Official metadata
-- `train_augmented.csv`: Extended metadata after data augmentation
-- `leaderboard.json`: Cross-validated performance for all 206 models
-- `leaderboard_31.json`: Scores for the 31 augmented species
-- `birdclef_models.joblib`: Trained XGBoost models for 206 species
-- `birdclef_models_31.joblib`: Models retrained after augmentation
+**Included metadata and artifacts:**
+- `train.csv`: Original metadata
+- `train_augmented.csv`: Metadata with synthetic data (for 31 low-F1 species)
+- `leaderboard.json`: CV metrics for all 206 species
+- `leaderboard_31.json`: Scores for 31 augmented species
+- `models.zip`: Trained per-species XGBoost models (`.joblib`) for both original and augmented runs
+
+---
 
 ## 🛠 Features and Highlights
 
-- ✅ **Binary Frequency Binning**: Adaptive thresholding over short-time Fourier transform (STFT) outputs to construct compact 3200-dim binary feature vectors.
-- 🎯 **Per-Species Classifiers**: One model per bird species trained in parallel using XGBoost, enabling interpretable one-vs-rest decision boundaries.
-- ⚖️ **Class Imbalance Handling**: Dynamic `scale_pos_weight`, secondary label upweighting, and optional data augmentation (pitch, speed, time-shift, gain).
-- 📍 **Metadata Integration**: Longitude, latitude, and recording collection (CSA/XC/iNat) encoded for improved context-aware predictions.
-- 📉 **Cross-Validation**: Stratified 5-fold CV with AUC and F1 score logging for leaderboard generation.
-- 🧪 **Test-Time Inference**: Chunk-wise prediction with model confidence thresholding across test soundscapes.
-
-## 🔁 Data Augmentation Strategy
-
-To mitigate poor performance for underrepresented classes, we augmented ~2,000 training clips across 31 species using:
-
-- `ts_0.9`, `ts_1.1`: Time-stretching
-- `ps_up`, `ps_down`: Pitch shifts
-- `gain`: Volume amplification
-
-Each augmented file was appended to the training set with updated metadata. No architectural changes were required, and the final training pipeline supports both original and augmented samples seamlessly.
+- ✅ **Binary Frequency Binning**: Uses adaptive percentile thresholds on STFT energy bands to build 3200-dim binary feature vectors.
+- 🐦 **Per-Species Binary Models**: One-vs-rest XGBoost classifiers for each bird species, trained independently.
+- ⚖️ **Class Imbalance Handling**: Uses `scale_pos_weight`, secondary label weighting, and strategic under-sampling.
+- 🗺️ **Metadata-Enhanced Learning**: Embeds location (lat/lon) and collection source (CSA/XC/iNat) into each feature vector.
+- 📉 **Evaluation**: 5-fold stratified cross-validation logging both AUC and F1.
+- 🧪 **Inference Pipeline**: Segments soundscapes into 5s chunks, runs predictions using 206 species-specific models.
 
 ---
 
-## 📝 Paper Status
+## 🔁 Data Augmentation Strategy
 
-This work has been **submitted as a working notes paper to CLEF 2025** under the LifeCLEF Bird Subtask and is currently under review.
+To boost recall for underrepresented species (those with near-zero F1), ~2,000 new training samples were created using:
 
-📎 `clef2025_working_note.pdf` – [Submitted version included in this repo](./clef2025_working_note.pdf)
+- `ts_0.9`, `ts_1.1` → Time-stretching
+- `ps_up`, `ps_down` → Pitch shifting
+- `gain` → Amplitude scaling
+
+Augmented recordings were appended with updated filenames and reused the original feature extractor, requiring **no architectural changes**.
+
+---
+
+## 📝 Working Notes Paper
+
+This project has been **submitted as a working notes paper to CLEF 2025 (LifeCLEF Bird Subtask)** and is currently under review.
+
+📎 [`clef2025_working_note.pdf`](./clef2025_working_note.pdf)
 
 ---
 
@@ -63,8 +69,11 @@ This work has been **submitted as a working notes paper to CLEF 2025** under the
 - `xgboost`
 - `librosa`
 - `numpy`, `pandas`, `scikit-learn`
-- `joblib`, `tqdm`, `matplotlib` (optional for visualizations)
+- `joblib`, `tqdm`, `matplotlib` (optional for plots)
 
-Install using:
+Install dependencies with:
+
 ```bash
 pip install -r requirements.txt
+
+Special thanks to the BirdCLEF organizers, UCSD CSE department, and our course advisor Prof. Berk Ustun for supporting the competition-driven research framework.
