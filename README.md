@@ -16,6 +16,17 @@ The final methodology was submitted as a working notes paper to **CLEF 2025** an
 | `inference.ipynb`                  | Custom inference pipeline over soundscape chunks for all 206 models |
 
 ---
+## 📂 Data
+
+The training and test datasets used in this project are available on the [BirdCLEF 2025 Kaggle Competition](https://www.kaggle.com/competitions/birdclef-2025/data). Due to size constraints (~12GB), raw audio files are not stored in this repository.
+
+**Key metadata and artifacts included in this repo:**
+- `train.csv`: Official metadata
+- `train_augmented.csv`: Extended metadata after data augmentation
+- `leaderboard.json`: Cross-validated performance for all 206 models
+- `leaderboard_31.json`: Scores for the 31 augmented species
+- `birdclef_models.joblib`: Trained XGBoost models for 206 species
+- `birdclef_models_31.joblib`: Models retrained after augmentation
 
 ## 🛠 Features and Highlights
 
