@@ -2,7 +2,8 @@
 
 This repository contains the core codebase developed for the BirdCLEF 2025 challenge, featuring a **novel per-species binary classification framework** for bioacoustic bird detection. The approach deviates from conventional multi-class CNN pipelines by building **dedicated binary classifiers for each species**, making it highly interpretable, modular, and scalable across hundreds of classes.
 
-The final methodology was submitted as a **working notes paper to CLEF 2025** and is currently under review.
+📢 Conference Publication & Presentation
+Our final methodology was submitted as a working notes paper to CLEF 2025 has been accepted. CLEF 2025 (Conference and Labs of the Evaluation Forum) will take place 9–12 September 2025 in Madrid, Spain, hosted by UNED. The working notes, along with the lab overview, will be published in the CEUR Workshop Proceedings (CEUR‑WS) series
 
 > 🧪 This project was developed as part of **DSC 291: Machine Learning Competitions** at UC San Diego, under the guidance of Prof. Berk Ustun.
 
@@ -57,7 +58,7 @@ Augmented recordings were appended with updated filenames and reused the origina
 
 ## 📝 Working Notes Paper
 
-This project has been **submitted as a working notes paper to CLEF 2025 (LifeCLEF Bird Subtask)** and is currently under review.
+Our final methodology was submitted as a working notes paper to CLEF 2025 has been accepted. It will be published in the CEUR Workshop Proceedings (CEUR‑WS) series
 
 📎 [`clef2025_working_note.pdf`](./clef2025_working_note.pdf)
 
